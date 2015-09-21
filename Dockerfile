@@ -10,7 +10,5 @@ COPY Gemfile /usr/src/app/
 COPY Gemfile.lock /usr/src/app/
 RUN bundle install
 
-COPY . /usr/src/app
-
 EXPOSE 80
 CMD ["bundle", "exec", "ruby", "app.rb", "-p 80"]
