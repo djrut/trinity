@@ -13,4 +13,4 @@ RUN bundle install
 COPY . /usr/src/app
 
 EXPOSE 80
-CMD ["bundle", "exec", "rackup", "-p 80"]
+CMD ["bundle", "exec", "ruby", "app.rb", "-p 80"]
