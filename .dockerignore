@@ -1,2 +1,8 @@
 *.md
 Dockerfile
+Dockerrun.aws.json
+Makefile
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+.git
+.gitignore
