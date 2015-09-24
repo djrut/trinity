@@ -1,20 +1,27 @@
-NAME=djrut/trinity
-VERSION=`git describe`
-CORE_VERSION=HEAD
+USER=djrut
+REPO=trinity
+BUILDDIR=Docker
 
-all: prepare build
+VERSION=`git describe --tags`
+BRANCH=`git branch|cut -d " " -f 2`
+IMAGE=$(USER)/$(REPO):$(VERSION)#$(BRANCH)
+
+all: prepare build cleanup
 
 prepare:
-git archive -o docker/echoapp.tar HEAD
+	git archive -o $(BUILDDIR)/$(REPO).tar HEAD
 
 build:
-docker build -t $(NAME):$(VERSION) --rm docker
+	docker build -t $(IMAGE) --rm $(BUILDDIR)
 
 tag_latest:
-docker tag $(NAME):$(VERSION) $(NAME):latest
+	docker tag $(IMAGE) $(USER)/$(REPO):latest
 
 test:
-nosetests -sv
+	nosetests -sv
 
 push:
-docker push $(NAME):$(VERSION)
+	docker push $(IMAGE)
+
+cleanup:
+	rm $(BUILDDIR)/$(REPO).tar
