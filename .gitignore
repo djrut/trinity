@@ -1,9 +1,6 @@
 *.swp
 .bundle
-
-
-
-
+Docker/*.tar
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

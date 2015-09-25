@@ -1,6 +1,7 @@
 *.md
 Dockerfile
 Dockerrun.aws.json
+build_dockerrun.sh
 Docker
 Makefile
 # Elastic Beanstalk Files

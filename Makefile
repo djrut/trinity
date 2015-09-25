@@ -4,11 +4,12 @@ BUILDDIR=Docker
 
 VERSION=`git describe --tags`
 BRANCH=`git branch|cut -d " " -f 2`
-IMAGE=$(USER)/$(REPO):$(VERSION)#$(BRANCH)
+IMAGE=$(USER)/$(REPO):$(VERSION)
 
 all: prepare build cleanup
 
 prepare:
+	./build_dockerrun.sh > Dockerrun.aws.json
 	git archive -o $(BUILDDIR)/$(REPO).tar HEAD
 
 build:

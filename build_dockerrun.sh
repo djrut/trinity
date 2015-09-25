@@ -1,7 +1,11 @@
+#!/usr/bin/env bash
+VERSION=`git describe --tags`
+
+cat << EOF
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "djrut/trinity:v1.0",
+    "Name": "djrut/trinity:$VERSION",
     "Update": "true"
   },
   "Ports": [
@@ -11,3 +15,4 @@
   ],
   "Logging": "/var/log/"
 }
+EOF
