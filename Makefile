@@ -9,8 +9,8 @@ IMAGE=$(USER)/$(REPO):$(VERSION)
 all: prepare build cleanup
 
 prepare:
-	./build_dockerrun.sh > Dockerrun.aws.json
-	git archive -o $(BUILDDIR)/$(REPO).tar HEAD
+	./Docker/build_dockerrun.sh > Dockerrun.aws.json
+	git archive -o $(BUILDDIR)/$(REPO)_$(VERSION).tar HEAD
 
 build:
 	docker build -t $(IMAGE) --rm $(BUILDDIR)
@@ -19,7 +19,6 @@ tag_latest:
 	docker tag $(IMAGE) $(USER)/$(REPO):latest
 
 test:
-	nosetests -sv
 
 push:
 	docker push $(IMAGE)

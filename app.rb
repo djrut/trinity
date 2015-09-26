@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'tilt/erb'
 require 'sinatra'
 
 configure do
@@ -7,5 +8,6 @@ configure do
 end
 
 get '/' do
-  "Hello world!"
+  @greeting="Hello world!"
+  erb :index
 end
