@@ -43,9 +43,15 @@
       </div>
 
       <div class="jumbotron">
+        <!-- Trinity specific view rendering here... starting with HAL image -->
         <img src="/img/HAL.png">
+
+        <!-- Output greeting message passed from controller -->
         <h1><%= @greeting %></h1>
-        <p class="lead">"Dave, although you took very thorough precautions in the pod against my hearing you, I could see your lips move."</p>
+
+        <!-- Output randomized HAL quote passed from controller -->
+        <p class="lead"><%= @quote %></p>
+
         <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
       </div>
 
