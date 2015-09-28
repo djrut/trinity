@@ -6,7 +6,7 @@ By Duncan Rutland, Sr. Solution Architect, Rackspace 2015
 
 ## I - Prologue 
 
-You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new staging environment to be build and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment close to production, you submit a pull request to have your feature branch merged into master and an automated CIDC workflow (trigged on the commit of merged branch) takes care of the rest.
+You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new staging environment to be build and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment close to production, you submit a pull request to have your feature branch merged into master and an automated CI/CD workflow (triggered by the commit of merged branch) takes care of the rest.
 
 ## II - Introduction
 
@@ -368,5 +368,3 @@ Finally, there is a handy command "eb open" that will open the current environme
 ~~~bash
 eb open
 ~~~
-
-Resulting in [INSERT IMAGE]
