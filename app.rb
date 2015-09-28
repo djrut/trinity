@@ -17,7 +17,7 @@ File.readlines("data/HAL_quotes.txt").each {|quote| QUOTES.push(quote)}
 # Controllers
 
 get '/*' do
-  @greeting="Hello world!"
+  @greeting="Hello, universe!"
   @quote="\"#{QUOTES.sample.strip}\""
   erb :index
 end
