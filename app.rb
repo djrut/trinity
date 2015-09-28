@@ -12,7 +12,7 @@ end
 # Models
 
 QUOTES = Array.new
-File.readlines("HAL_quotes.txt").each {|quote| QUOTES.push(quote)}
+File.readlines("data/HAL_quotes.txt").each {|quote| QUOTES.push(quote)}
 
 # Controllers
 
