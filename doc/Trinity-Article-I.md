@@ -6,7 +6,7 @@ By Duncan Rutland, Sr. Solution Architect, Rackspace 2015
 
 ## I - Prologue 
 
-You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new staging environment to be build and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment close to production, you submit a pull request to have your feature branch merged into master and an automated CI/CD workflow (triggered by the commit of merged branch) takes care of the rest.
+You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new staging environment to be build and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment close to production, you push your feature branch to Github where automated regression tests are triggered. Finally, you submit a pull request to have your successfully tested feature branch merged into master and an automated CI/CD workflow (triggered by the commit of merged branch) takes care of the rest.
 
 ## II - Introduction
 
@@ -20,7 +20,11 @@ In this first article, we will tackle some fundamental building blocks that will
 4. Deploying a feature release to local container
 5. Transitioning releases to dev and staging environments
 
-Caveat: This article imposes a deliberately simplified example application, release workflow (i.e. no automated tests) and environment layout (just local dev, staging and production) in order to illustrate the key concepts behind running Git, Docker, and Elastic Beanstalk as an integrated unit. Later articles in this series will tackle some more realistic use cases including incorporation in to CICD workflows and more complex applications than run on multiple containers and consume other AWS services.
+**Caveat**: The current version of this project (as of 9/27/15) imposes a deliberately simplified example application, release workflow (i.e. no automated tests) and environment layout (just local dev, staging and production) in order to illustrate the key concepts behind running Git, Docker, and Elastic Beanstalk as an integrated unit. Later articles in this series will tackle some more realistic use cases including incorporation in to CICD workflows and more complex applications than run on multiple containers and consume other AWS services.
+
+**Disclaimer**: The demonstration code in the corresponding [repository] (https://github.com/behemothaur/trinity) is for illustrative purposes only, and may not be sufficiently robust for production use. Users should carefully inspect sample code before running in a production environment. Use at your own risk.
+
+**Disclosure**: The idea of a Makefile mechanism to automate container preparation, build, push etc. was inspired by [this](http://victorlin.me/posts/2014/11/26/running-docker-with-aws-elastic-beanstalk) excellent article by Victor Lin.
 
 ## III - Design Principles
 
@@ -128,6 +132,8 @@ Step 2 : RUN mkdir -p /usr/src/app
 
 ~/trinity/issue-001> 
 ~~~
+
+
 
 ### Test new application container locally
 ---
