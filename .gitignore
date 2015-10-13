@@ -1,7 +1,6 @@
 *.swp
 .bundle
 Docker/*.tar
-Dockerrun.aws.json
 .DS_Store
 
 # Elastic Beanstalk Files
