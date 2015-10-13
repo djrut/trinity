@@ -14,6 +14,8 @@ prep:
 build:
 	docker build -t $(IMAGE) --rm $(BUILDDIR)
 	./Docker/build_dockerrun.sh > Dockerrun.aws.json
+	git add Dockerrun.aws.json
+	git commit --amend --no-edit
 
 tag_latest:
 	docker tag $(IMAGE) $(USER)/$(REPO):latest
