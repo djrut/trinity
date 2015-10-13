@@ -6,7 +6,7 @@ VERSION=`git describe --tags`
 BRANCH=`git branch|cut -d " " -f 2`
 IMAGE=$(USER)/$(REPO):$(VERSION)
 
-all: prep build push clean
+all: prep build clean
 
 prep:
 	./Docker/build_dockerrun.sh > Dockerrun.aws.json

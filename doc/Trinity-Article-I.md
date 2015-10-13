@@ -6,11 +6,11 @@ By Duncan Rutland, Sr. Solution Architect, Rackspace 2015
 
 ## I - Prologue 
 
-You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new staging environment to be build and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment close to production, you push your feature branch to Github where automated regression tests are triggered. Finally, you submit a pull request to have your successfully tested feature branch merged into master and an automated CI/CD workflow (triggered by the commit of merged branch) takes care of the rest.
+You have been assigned the task of writing an enhancement to _the project_, which you undertake within a feature branch on your laptop (merging frequently from master of course). Reaching a stable point, you do decide to do a final merge, commit and check out how it runs in a local container runtime environment. You type "git commit -m ..." and a hook automatically triggers a new immutable Docker container to be built, local unit tests to be run, and upon success the new container is pushed to your [Dockerhub](https://hub.docker.com/) repository and spun up in the Docker host running on your laptop. A quick visual smoke test reveals nothing of concern. You decide to deploy the new feature branch to a fresh staging environment for further tests to be run. A quick "eb deploy" command triggers a new test environment to be built and the new container image (identical to the one running on your laptop) to be spun up. Happy that the new application version is working in an environment near-identical to production, you submit a pull request to have the feature branch merged into master and an automated CI/CD workflow (triggered by the commit of merged branch) takes care of the rest.
 
 ## II - Introduction
 
-This is the first of a multi-part series that demonstrates one solution by which a developer can make the transition of code from laptop to production as pain-free as possible. The fictional semi-automated deployment scenario above is just one solution from a swarming myriad of possible workflows (with varying degrees of automation) that can reduce operational overhead on the developer. This series will make use of technologies such as Git, Docker, Elastic Beanstalk, CircleCI and other standard tools. 
+This is the first of a multi-part series that demonstrates one solution by which a developer can make the transition of code from laptop to production as pain-free as possible. The fictional semi-automated deployment scenario above is just one solution from a swarming myriad of possible workflows (with varying degrees of automation) that can reduce operational overhead on the developer. This series will make use of technologies such as Git, Docker, Elastic Beanstalk, and other standard tools. 
 
 In this first article, we will tackle some fundamental building blocks that will allow for more exotic combinations in subsequent articles:
 
@@ -18,11 +18,11 @@ In this first article, we will tackle some fundamental building blocks that will
 2. Elastic Beanstalk configuration
 3. Manual environment deployment
 4. Deploying a feature release to local container
-5. Transitioning releases to dev and staging environments
+5. Transitioning feature release to test Elastic Beanstalk environments
 
-**Caveat**: The current version of this project (as of 9/27/15) imposes a deliberately simplified example application, release workflow (i.e. no automated tests) and environment layout (just local dev, staging and production) in order to illustrate the key concepts behind running Git, Docker, and Elastic Beanstalk as an integrated unit. Later articles in this series will tackle some more realistic use cases including incorporation in to CICD workflows and more complex applications than run on multiple containers and consume other AWS services.
+**Caveat**: The current version of this project imposes a deliberately simplified example application, release workflow (i.e. no automated tests) and environment layout (just local dev and test) in order to illustrate the key concepts behind running Git, Docker, and Elastic Beanstalk as an integrated unit. Later articles in this series will tackle some more realistic use cases including incorporation in to CICD workflows and more complex applications than run on multiple containers and consume other AWS services.
 
-**Disclaimer**: The demonstration code in the corresponding [repository] (https://github.com/behemothaur/trinity) is for illustrative purposes only, and may not be sufficiently robust for production use. Users should carefully inspect sample code before running in a production environment. Use at your own risk.
+**Disclaimer**: The demonstration code in the corresponding [repository] (https://github.com/djrut/trinity) is for illustrative purposes only, and may not be sufficiently robust for production use. Users should carefully inspect sample code before running in a production environment. Use at your own risk.
 
 **Disclosure**: The idea of a Makefile mechanism to automate container preparation, build, push etc. was inspired by [this](http://victorlin.me/posts/2014/11/26/running-docker-with-aws-elastic-beanstalk) excellent article by Victor Lin.
 
@@ -167,18 +167,18 @@ You open a browser window and connect to the Docker host IP and port that is run
 
 ![Local](https://s3-us-west-2.amazonaws.com/dirigible-images/trinity-local.png)
 
-Success! The new greeting message is working as expected. The next step is to run the new container images in the staging environment to see how this would work in production.
+Success! The new greeting message is working as expected. The next step is to run the new container images in a true AWS test environment to see how this would work in production.
 
-### Test new application container in staging environment
+### Test new application container in test environment
 ---
 
 A simple "eb create" command is all that is needed to bind this branch (using the --branch_default option) and spin-up this new version into a fresh staging environment in your accounts default VPC:
 
 ~~~bash
-~/trinity/issue-001> eb create trinity-stage-01 --branch_default
+~/trinity/issue-001> eb create trinity-test-001 --branch_default
 ~~~
 
-This time the "eb open" command can be run to fire up a browser window pointing to the staging environment:
+This time the "eb open" command can be run to fire up a browser window pointing to the test environment:
 
 ~~~bash
 ~/trinity/issue-001> eb open
@@ -186,7 +186,7 @@ This time the "eb open" command can be run to fire up a browser window pointing 
 
 ...and voila! The new application image is running successfully in staging.
 
-![Staging](https://s3-us-west-2.amazonaws.com/dirigible-images/trinity-stage.png)
+![Test](https://s3-us-west-2.amazonaws.com/dirigible-images/trinity-test.png)
 
 NOTE: For longer running branches (such as those that wrap entire versions/milestones), this staging environment is persistent and only requires an "eb deploy" to push newer versions, after committing changes and running "make". 
  
@@ -198,7 +198,7 @@ In **Part II** of this series we will take a peek under the covers to examine ho
 
 In **Part III**, we will make this look closer to a real production scenario by adding some additional components (and external dependencies) to the application and introduce unit tests.
 
-In **Part IV**, we will show how this application can integrate into a fully automated CI/CD workflow using CircleCI.
+In **Part IV**, we will show how this application can integrate into a fully automated CI/CD workflow.
 
 Thank-you for your time and attention!
 
@@ -268,7 +268,7 @@ It will be necessary to create a unique name for your forked version of the trin
 ### Step 2 - Fork & clone Git repository
 The first step is to fork and clone the demo Git repository. Full details on how do to this can be found [here](https://help.github.com/articles/fork-a-repo/) however the basic steps are:
 
-1. On GitHub, navigate to the [behemothaur/trinity](https://github.com/behemothaur/trinity) repository 
+1. On GitHub, navigate to the [djrut/trinity](https://github.com/djrut/trinity) repository 
 2. In the top-right corner of the page, click **Fork**. You now have a fork of the demo repository in your Github account.
 3. Create local clone, substituting your Github USERNAME
 
@@ -278,7 +278,7 @@ git clone https://github.com/[USER_NAME]/trinity.git
  4. Create upstream repository to allow sync with original project
  
 ~~~bash
-git remote add upstream https://github.com/behemothaur/trinity.git
+git remote add upstream https://github.com/djrut/trinity.git
 ~~~
 
 ### Step 2 - Docker Hub setup 
