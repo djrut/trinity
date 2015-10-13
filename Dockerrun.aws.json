@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "djrut/trinity:v1.1-18-g81c3675",
+    "Name": "djrut/trinity:v1.1-20-g6b54b6e",
     "Update": "true"
   },
   "Ports": [
