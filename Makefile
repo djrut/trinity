@@ -2,8 +2,8 @@ USER = djrut
 REPO = trinity
 BUILDDIR = Docker
 
-VERSION = `git describe --tags`
-IMAGE != $(USER)/$(REPO):$(VERSION)
+VERSION := `git describe --tags`
+IMAGE = $(USER)/$(REPO):$(VERSION)
 
 all: prep test build push clean
 
