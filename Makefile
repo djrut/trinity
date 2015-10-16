@@ -9,23 +9,23 @@ IMAGE		:= $(USER)/$(REPO):$(VERSION)
 all:	| prep build push commit clean
 
 prep:
-	$(info +++ Building Git archive... +++)
+	@echo "+\n++\n+++ Building Git archive..."
 	@git archive -o $(BUILDDIR)/$(REPO).tar HEAD
 
 build:
-	$(info +++ Performing build of Docker image... +++)
+	@echo "+\n++\n+++ Performing build of Docker image..."
 	@docker build -t $(IMAGE) --force-rm --rm $(BUILDDIR)
 
 push:
-	$(info +++ Pushing image to Dockerhub... +++)
+	@echo "+\n++\n+++ Pushing image to Dockerhub..."
 	@docker push $(IMAGE)
 
 commit:
-	$(info +++ Committing updated Dockerrun.aws.json... +++)
+	@echo "+\n++\n+++ Committing updated Dockerrun.aws.json..."
 	@Docker/build_dockerrun.sh > Dockerrun.aws.json
 	@git add Dockerrun.aws.json
 	@git commit --amend --no-edit
 
 clean:
-	$(info +++ Clean-up... +++)
+	@echo "+\n++\n+++ Cleaning-up... "
 	@rm -v $(BUILDDIR)/$(REPO).tar
