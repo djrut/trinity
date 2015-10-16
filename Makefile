@@ -1,32 +1,31 @@
-USER = djrut
-REPO = trinity
-BUILDDIR = Docker
+USER		:= "djrut"
+REPO		:= "trinity"
+BUILDDIR	:= "Docker"
+VERSION		:= $(shell git describe --tags)
+IMAGE		:= $(USER)/$(REPO):$(VERSION)
 
-VERSION = `git describe --tags`
-IMAGE != $(USER)/$(REPO):$(VERSION)
+.PHONY: all prep build push commit clean
 
-all: prep test build push clean
+all:	| prep build push commit clean
 
 prep:
-	git archive -o $(BUILDDIR)/$(REPO).tar HEAD
-
-test:
-	docker build -t $(IMAGE) --force-rm --rm $(BUILDDIR)
-	docker rmi $(IMAGE)
+	@echo "+\n++\n+++ Building Git archive..."
+	@git archive -o $(BUILDDIR)/$(REPO).tar HEAD
 
 build:
-	./Docker/build_dockerrun.sh > Dockerrun.aws.json
-	docker build -t $(IMAGE) --force-rm --rm $(BUILDDIR)
-	git add Dockerrun.aws.json
-	git commit --amend --no-edit
-
-tag_latest:
-	docker tag $(IMAGE) $(USER)/$(REPO):latest
-
-test:
+	@echo "+\n++\n+++ Performing build of Docker image..."
+	@docker build -t $(IMAGE) --force-rm --rm $(BUILDDIR)
 
 push:
-	docker push $(IMAGE)
+	@echo "+\n++\n+++ Pushing image to Dockerhub..."
+	@docker push $(IMAGE)
+
+commit:
+	@echo "+\n++\n+++ Committing updated Dockerrun.aws.json..."
+	@Docker/build_dockerrun.sh > Dockerrun.aws.json
+	@git add Dockerrun.aws.json
+	@git commit --amend --no-edit
 
 clean:
-	rm $(BUILDDIR)/$(REPO).tar
+	@echo "+\n++\n+++ Cleaning-up... "
+	@rm -v $(BUILDDIR)/$(REPO).tar
