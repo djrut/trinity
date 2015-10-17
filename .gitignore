@@ -2,7 +2,6 @@
 .bundle
 Docker/*.tar
 .DS_Store
-.gitattributes
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
