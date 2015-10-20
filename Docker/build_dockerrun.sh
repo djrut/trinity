@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-VERSION=`git describe --tags`
+USER="djrut"
+REPO="trinity"
+VERSION=$(git describe --tags)
 
 cat << EOF
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "djrut/trinity:$VERSION",
+    "Name": "$USER/$REPO:$VERSION",
     "Update": "true"
   },
   "Ports": [
