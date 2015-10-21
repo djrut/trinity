@@ -1,7 +1,7 @@
 USER		:= "djrut"
 REPO		:= "trinity"
 BUILDDIR	:= "Docker"
-VERSION		:= $(shell git describe --tags)
+VERSION		:= $(git rev-parse --abbrev-ref HEAD)
 IMAGE		:= $(USER)/$(REPO):$(VERSION)
 
 .PHONY: all prep build push commit clean
