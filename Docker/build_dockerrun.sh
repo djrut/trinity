@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 USER="djrut"
 REPO="trinity"
-VERSION=$(git describe --tags)
+VERSION="$(git rev-parse --abbrev-ref HEAD)"
 
 cat << EOF
 {

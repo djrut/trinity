@@ -1,8 +1,8 @@
 USER		:= "djrut"
 REPO		:= "trinity"
 BUILDDIR	:= "Docker"
-VERSION		:= $(git rev-parse --abbrev-ref HEAD)
-IMAGE		:= $(USER)/$(REPO):$(VERSION)
+VERSION		:= "$(shell git rev-parse --abbrev-ref HEAD)"
+IMAGE		:= "$(USER)/$(REPO):$(VERSION)"
 
 .PHONY: all prep build push commit clean
 
